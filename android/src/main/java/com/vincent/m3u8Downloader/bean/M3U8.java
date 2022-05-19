@@ -12,7 +12,7 @@ public class M3U8 {
     private String baseUrl;
     private String dirPath;
     private String localPath;
-    private String key;
+    private byte[] key;
     private String iv;
 
     private List<M3U8Ts> tsList = new ArrayList<>();
@@ -41,11 +41,11 @@ public class M3U8 {
         this.localPath = localPath;
     }
 
-    public String getKey() {
+    public byte[] getKey() {
         return key;
     }
 
-    public void setKey(String key) {
+    public void setKey(byte[] key) {
         this.key = key;
     }
 

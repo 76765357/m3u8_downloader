@@ -185,7 +185,8 @@ public class M3U8DownloadTask {
                         } else {
                             // 否则生成local.m3u8文件
                             String m3u8Path = saveDir + File.separator + LOCAL_FILE_NAME;
-                            if (TextUtils.isEmpty(currentM3U8.getKey())) {
+                            if (!EncryptUtil.notEmpty(currentM3U8.getKey())) {
+                            //if (TextUtils.isEmpty(currentM3U8.getKey())) {
                                 M3U8Util.createLocalM3U8(m3u8Path, currentM3U8);
                             } else {
                                 M3U8Util.createLocalM3U8(m3u8Path, currentM3U8, M3U8_KEY_NAME);
@@ -219,7 +220,7 @@ public class M3U8DownloadTask {
         if (!dir.exists()) {
             dir.mkdirs();
         }
-        if (!TextUtils.isEmpty(m3u8.getKey())) {
+        if (EncryptUtil.notEmpty(m3u8.getKey())) {
             // 保存key文件
             try {
                 M3U8Util.saveFile(m3u8.getKey(), saveDir + File.separator + "key.key");
@@ -355,7 +356,7 @@ public class M3U8DownloadTask {
                 if(!file.exists())
                     continue;
                 inputStream = new FileInputStream(file);
-                if (!TextUtils.isEmpty(currentM3U8.getKey())) {
+                if (EncryptUtil.notEmpty(currentM3U8.getKey())) {
                     int available = inputStream.available();
                     if (bytes.length < available)
                         bytes = new byte[available];

@@ -13,7 +13,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ByteArrayOutputStream;
 import java.net.URL;
 
 /**
@@ -57,8 +59,16 @@ public class M3U8Util {
                                 // 获取key
                                 v = v.replaceAll("\"", "");
                                 v = v.replaceAll("'", "");
-                                BufferedReader keyReader = new BufferedReader(new InputStreamReader(new URL(baseUrl, v).openStream()));
-                                ret.setKey(keyReader.readLine());
+                                //BufferedReader keyReader = new BufferedReader(new InputStreamReader(new URL(baseUrl, v).openStream(),"utf8"));
+                                //ret.setKey(keyReader.readLine());
+                                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                                InputStream is = new URL(baseUrl, v).openStream();
+                                byte[] byteChunk = new byte[4096];
+                                int n;
+                                while ( (n = is.read(byteChunk)) > 0 ) {
+                                    baos.write(byteChunk, 0, n);
+                                }
+                                ret.setKey(baos.toByteArray());
                                 M3U8Log.d("m3u8 key: " + ret.getKey());
                             } else if (k.equals("IV")) {
                                 // 获取IV

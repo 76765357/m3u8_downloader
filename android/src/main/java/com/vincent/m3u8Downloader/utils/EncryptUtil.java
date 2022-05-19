@@ -138,6 +138,10 @@ public class EncryptUtil {
         return result;
     }
 
+    public static boolean notEmpty(byte[] t){
+        return t != null && t.length > 0;
+    }
+
     /**
      * 解密ts文件
      * @param bytes 文件字节流
@@ -146,8 +150,8 @@ public class EncryptUtil {
      * @return  解密后的byte[]
      * @throws Exception 异常
      */
-    public static byte[] decryptTs(byte[] bytes, String key, String iv) throws  Exception {
-        if (TextUtils.isEmpty(key)) {
+    public static byte[] decryptTs(byte[] bytes, byte[] key, String iv) throws  Exception {
+        if (!notEmpty(key)) {
             return bytes;
         }
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS7Padding");
@@ -161,7 +165,8 @@ public class EncryptUtil {
             if (ivByte == null || ivByte.length != 16)
                 ivByte = new byte[16];
         }
-        SecretKeySpec keySpec = new SecretKeySpec(key.getBytes(ENCODING), "AES");
+//        SecretKeySpec keySpec = new SecretKeySpec(key.getBytes(ENCODING), "AES");
+        SecretKeySpec keySpec = new SecretKeySpec(key, "AES");
         AlgorithmParameterSpec paramSpec = new IvParameterSpec(ivByte);
         cipher.init(Cipher.DECRYPT_MODE, keySpec, paramSpec);
         return cipher.doFinal(bytes);
